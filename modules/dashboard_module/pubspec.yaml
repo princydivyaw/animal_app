@@ -1,0 +1,46 @@
+name: dashboard_module
+description: "A new Flutter module project."
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_modular: ^5.0.3
+  video_player: ^2.7.2
+  flutter_bloc: ^8.1.0
+  equatable: ^2.0.0
+  dartz: ^0.10.1
+  image_picker: ^1.0.7
+  file_picker: ^8.3.7
+  path_provider: ^2.0.4
+  shimmer: ^3.0.0
+
+
+
+  share_module:
+    path: ../share_module
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+
+dependency_overrides:
+  share_plus: ^6.3.4
+  win32: ^5.1.1
+
+
+
+flutter:
+
+  uses-material-design: true
+  module:
+    androidX: true
+    androidPackage: com.example.dashboard_module
+    iosBundleIdentifier: com.example.dashboardModule
