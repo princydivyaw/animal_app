@@ -12,8 +12,6 @@ class APIServiceHelper {
       final response =
           await http.get(Uri.parse(url)).timeout(const Duration(seconds: 60));
 
-      print("response1============$response");
-
       if (response.statusCode == 200) {
         return response; // return utf8.decode(response.bodyBytes).toString();
       }
@@ -42,8 +40,6 @@ class APIServiceHelper {
             body: request,
           )
           .timeout(const Duration(seconds: 60));
-
-      print("response1============$response");
 
       if (response.statusCode == 200) {
         return response; // return utf8.decode(response.bodyBytes).toString();

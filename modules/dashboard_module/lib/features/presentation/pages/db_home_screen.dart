@@ -10,6 +10,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:share_module/core/constants/app_assets.dart';
 import 'package:share_module/core/constants/app_colors.dart';
 import 'package:share_module/core/theme/text_styles.dart';
+import 'package:share_module/core/utils/app_common_utils.dart';
 
 class DbHomeScreen extends StatefulWidget {
   const DbHomeScreen({super.key});
@@ -219,15 +220,20 @@ class DbHomeScreenState extends State<DbHomeScreen> {
                 width: MediaQuery.of(context).size.width * 0.016,
               ),
               GestureDetector(
-                  onTap: () {
-                    // Share.share(
-                    //   "Check out this app 🚀\nhttps://example.com",
-                    //   subject: "Explore this app",
-                    // );
-                  },
-                  child: const Icon(Icons.send_outlined, size: 24)),
+                onTap: () {
+                  createAndShareFile(
+                      url: item.animalDetails.animalCollection.first.itemUrl);
+                },
+                child: const Icon(
+                  Icons.send_outlined,
+                  size: 24,
+                ),
+              ),
               const Spacer(),
-              const Icon(Icons.bookmark_border, size: 24),
+              const Icon(
+                Icons.bookmark_border,
+                size: 24,
+              ),
             ],
           ),
         ),
@@ -664,6 +670,8 @@ class DbHomeScreenState extends State<DbHomeScreen> {
                           ),
                         ),
                       ),
+
+                      ///send feed
                       InkWell(
                           onTap: () {},
                           child:
@@ -677,5 +685,9 @@ class DbHomeScreenState extends State<DbHomeScreen> {
         );
       },
     );
+  }
+
+  Future<void> createAndShareFile({required String url}) async {
+    AppCommonUtils().downloadAndShare(url);
   }
 }

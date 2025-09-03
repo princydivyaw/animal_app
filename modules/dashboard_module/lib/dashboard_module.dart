@@ -5,11 +5,12 @@ import 'package:dashboard_module/features/domain/repositories/db_repositories.da
 import 'package:dashboard_module/features/domain/usecases/db_usecases.dart';
 import 'package:dashboard_module/features/presentation/cubit/db_cubit.dart';
 import 'package:dashboard_module/features/presentation/cubit/db_sell_confirm_cubit.dart';
-import 'package:dashboard_module/features/presentation/pages/dashboard_screen.dart';
+import 'package:dashboard_module/features/presentation/pages/db_main_screen.dart';
 import 'package:dashboard_module/features/presentation/pages/failure_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
+import 'features/presentation/pages/dashboard_screen.dart';
 import 'features/presentation/pages/db_sell_confirm_screen.dart';
 
 class DashboardModule extends Module {
@@ -35,7 +36,12 @@ class DashboardModule extends Module {
         ChildRoute(
           DbRoutes.dashboardScreen,
           transition: TransitionType.fadeIn,
-          child: (context, args) => const DashboardScreen(),
+          child: (context, args) => DashboardScreen(),
+        ),
+        ChildRoute(
+          "/${DbRoutes.dbMainScreen}",
+          transition: TransitionType.fadeIn,
+          child: (context, args) => const DbMainScreen(),
         ),
         ChildRoute(
           "/${DbRoutes.failure}",
@@ -44,7 +50,7 @@ class DashboardModule extends Module {
         ),
         ChildRoute(
           "/${DbRoutes.sellConfirm}",
-          transition: TransitionType.fadeIn,
+          transition: TransitionType.leftToRight,
           child: (context, args) {
             final files =
                 (args.data as Map)['files'] as List<PlatformFile>? ?? [];

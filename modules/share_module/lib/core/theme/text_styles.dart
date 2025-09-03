@@ -218,6 +218,8 @@ class AppTextStyles {
       );
 
   static TextTheme get textThemeDark => textTheme.copyWith(
-      // bodySmall: captionNormal.copyWith(color: Colors.grey.shade400),
+        bodySmall: captionNormal(color: Colors.white),
+        headlineLarge: captionNormal(color: Colors.white),
+        bodyMedium: captionNormal(color: Colors.white),
       );
 }

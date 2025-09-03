@@ -22,5 +22,6 @@ Depends on all your plugins, and provides a function to register them.
   s.dependency 'file_picker'
   s.dependency 'image_picker_ios'
   s.dependency 'path_provider_foundation'
+  s.dependency 'share_plus'
   s.dependency 'video_player_avfoundation'
 end

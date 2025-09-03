@@ -6,6 +6,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 // import 'package:permission_handler/permission_handler.dart';
 import 'package:share_module/core/constants/app_colors.dart';
 import 'package:share_module/core/theme/text_styles.dart';
+import 'package:share_module/core/utils/app_common_utils.dart';
 
 class DbSellScreen extends StatefulWidget {
   const DbSellScreen({Key? key}) : super(key: key);
@@ -341,12 +342,10 @@ class _AddPostScreenState extends State<DbSellScreen> {
   }
 
   chooseAccess() async {
-    final result = await pickFiles();
-    // if (result != null) {
-    setState(() {
-      isAccessAllowed = true;
-    });
-    // }
+    AppCommonUtils().pickFileWithPermission();
+    // setState(() {
+    //   isAccessAllowed = true;
+    // });
   }
 
   uploadThePost() {

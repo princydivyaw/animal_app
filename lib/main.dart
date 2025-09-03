@@ -18,7 +18,7 @@ import 'onboard/presentation/cubit/auth_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await DoHiveUtils.openHiveBox(hiveBoxName: "UserDetails");
+  await DoHiveUtils.openHiveBox(hiveBoxName: AppStrings.appUserDetails);
   runApp(ModularApp(module: AppModule(), child: const AnimalApp()));
 }
 
@@ -61,7 +61,7 @@ class AnimalApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
     );

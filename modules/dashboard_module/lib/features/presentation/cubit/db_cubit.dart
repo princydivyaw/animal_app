@@ -14,7 +14,6 @@ class DBCubit extends Cubit<DBState> {
       response.fold((f) {
         emit(GetFeedDataErrorState(errorMsg: f.message.toString()));
       }, (s) {
-        print("oo=======================$s");
         emit(GetFeedDataLoadedState(feedEntity: s));
       });
     } catch (e) {

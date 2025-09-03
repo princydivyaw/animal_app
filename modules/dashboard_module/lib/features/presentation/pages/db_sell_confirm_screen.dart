@@ -1,3 +1,4 @@
+import 'package:dashboard_module/features/data/models/db_sell_confirm_model.dart';
 import 'package:dashboard_module/features/domain/entities/db_sell_confirm_entity.dart';
 import 'package:dashboard_module/features/presentation/cubit/db_sell_confirm_cubit.dart';
 import 'package:dashboard_module/features/presentation/cubit/db_sell_confirm_state.dart';
@@ -18,6 +19,7 @@ class DbSellConfirmScreen extends StatefulWidget {
 
 class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
   final sellCubit = Modular.get<DbSellConfirmCubit>();
+  TextEditingController addressController = TextEditingController();
 
   DbSellConfirmEntity? screenEntity;
 
@@ -572,11 +574,11 @@ class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
       children: [
         InkWell(
           onTap: () async {
-            final DropDownEntity? a =
+            final DbSellConfirmQuestionModel? a =
                 await dropDownTypeField(fieldText: item.label, item: item.item);
             if (a != null) {
               setState(() {
-                item.fieldController.text = a.value;
+                item.fieldController.text = a.label;
               });
             }
           },
@@ -639,9 +641,7 @@ class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
         return Container(
             height: MediaQuery.of(context).size.height * 0.6,
             width: MediaQuery.of(context).size.width,
-            // padding: const EdgeInsets.only(
-            //   bottom: 48.0,
-            // ),
+            padding: const EdgeInsets.all(0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -728,143 +728,181 @@ class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
 
   //radio
   radioTextField(DbSellConfirmDataEntity item, int index) {
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
-          height: MediaQuery.of(context).size.height * 0.06,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: item.item!.length,
-              itemBuilder: (context, int radioIndex) {
-                return InkWell(
-                  onTap: () {
-                    setState(() {
-                      for (var i = 0; i < item.item!.length; i++) {
-                        item.item![i].isSelected = false;
-                      }
-                      item.item![radioIndex].isSelected = true;
-                    });
-                    print("oo======${item.item![radioIndex].fields}");
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+    var fieldItem = item.item;
+    int i = 0;
+    bool isEnable = false;
+    return SizedBox(
+      height: 200,
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            // decoration: BoxDecoration(border: Border.all(color: Colors.black)),
+            height: MediaQuery.of(context).size.height * 0.06,
+            child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: item.item!.length,
+                itemBuilder: (context, int radioIndex) {
+                  return InkWell(
+                    onTap: () {
+                      sellCubit.fieldValidate();
+                      setState(() {
+                        i = radioIndex;
+                        for (var i = 0; i < item.item!.length; i++) {
+                          item.item![i].isSelected = false;
+                        }
+                        item.item![radioIndex].isSelected = true;
+                        isEnable = item.item![radioIndex].label.toLowerCase() ==
+                                "female" &&
+                            item.item![radioIndex].fields != null &&
+                            item.item![radioIndex].fields!.isNotEmpty;
+                      });
+                    },
+                    child: Column(
                       children: [
-                        item.item![radioIndex].isSelected
-                            ? Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.025,
-                                width:
-                                    MediaQuery.of(context).size.height * 0.025,
-                                padding: const EdgeInsets.all(2.0),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryDark,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Container(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.016,
-                                    width: MediaQuery.of(context).size.height *
-                                        0.016,
-                                    padding: const EdgeInsets.all(2.0),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.background,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Container(
+                        Padding(
+                          padding: const EdgeInsets.only(right: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              item.item![radioIndex].isSelected
+                                  ? Container(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.016,
+                                              0.025,
                                       width:
                                           MediaQuery.of(context).size.height *
-                                              0.016,
+                                              0.025,
+                                      padding: const EdgeInsets.all(2.0),
                                       decoration: BoxDecoration(
                                         color: AppColors.primaryDark,
                                         borderRadius:
                                             BorderRadius.circular(100),
                                       ),
-                                    )),
-                              )
-                            : Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.025,
+                                      child: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.016,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.016,
+                                          padding: const EdgeInsets.all(2.0),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.background,
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                          ),
+                                          child: Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.016,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.016,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primaryDark,
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                            ),
+                                          )),
+                                    )
+                                  : Container(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.025,
+                                      width:
+                                          MediaQuery.of(context).size.height *
+                                              0.025,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppColors.primaryDark,
+                                            width: 1.8),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                      ),
+                                    ),
+                              SizedBox(
                                 width:
-                                    MediaQuery.of(context).size.height * 0.025,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: AppColors.primaryDark, width: 1.8),
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
+                                    MediaQuery.of(context).size.width * 0.016,
                               ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.016,
-                        ),
-                        Text(item.item![radioIndex].label,
-                            style: AppTextStyles.bodyRegularNormal(
-                                color: AppColors.textPrimary)),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.032,
+                              Text(item.item![radioIndex].label,
+                                  style: AppTextStyles.bodyRegularNormal(
+                                      color: AppColors.textPrimary)),
+                              SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.032,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                );
-              }),
-        ),
+                  );
+                }),
+          ),
 
-        ///condition check
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          ///condition check
+          if (fieldItem != null && fieldItem[i].label.toLowerCase() == "female")
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primary),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                color: AppColors.background,
-              ),
-              child: TextField(
-                style: AppTextStyles.bodyRegularNormal(
-                    color: AppColors.textPrimary),
-                focusNode: item.fieldFocus,
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.done,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Litre of Milk",
-                  hintStyle: AppTextStyles.bodyRegularNormal(
-                      color: AppColors.textPrimary),
-                  suffixText: "Ltr",
-                  suffixStyle: AppTextStyles.bodyRegularNormal(
-                      color: AppColors.textPrimary),
-                ),
-                controller: item.fieldController,
-                onChanged: (a) {
-                  // fieldValidator(field: "email", value: a);
-                },
-              ),
+              height: 100,
+              color: Colors.red,
+              margin: EdgeInsets.only(top: 16),
             ),
-            item.isFieldValidated
-                ? fieldErrorWidget(errorText: item.fieldErrorTxt)
-                : SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.032,
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.primary),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  color: AppColors.background,
+                ),
+                child: TextField(
+                  style: AppTextStyles.bodyRegularNormal(
+                      color: AppColors.textPrimary),
+                  focusNode: item.fieldFocus,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Litre of Milk",
+                    hintStyle: AppTextStyles.bodyRegularNormal(
+                        color: AppColors.textPrimary),
+                    suffixText: "Ltr",
+                    suffixStyle: AppTextStyles.bodyRegularNormal(
+                        color: AppColors.textPrimary),
                   ),
-          ],
-        ),
-      ],
+                  controller: item.fieldController,
+                  onChanged: (a) {
+                    // fieldValidator(field: "email", value: a);
+                  },
+                ),
+              ),
+              item.isFieldValidated
+                  ? fieldErrorWidget(errorText: item.fieldErrorTxt)
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.032,
+                    ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   //address
   addressTextField(DbSellConfirmDataEntity item) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -906,19 +944,14 @@ class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
                   controller: item.fieldController,
                   onChanged: (a) {
                     sellCubit.fieldValidate();
-
-                    setState(() {
-                      if (item.fieldController.text.isNotEmpty &&
-                          item.fieldController.text.length == 6) {
-                        setState(() {
-                          item.isFieldValidated = true;
-                          // addressController.text = "Chennai";
-                        });
-                      } else {
-                        item.fieldErrorTxt = "PLease enter valid pin code";
-                        item.isFieldValidated = true;
-                      }
-                    });
+                    fieldValidate(value: a, field: "pincode", item: item);
+                  },
+                  onSubmitted: (a) {
+                    if (a.length == 6 &&
+                        !item.isFieldValidated &&
+                        item.fieldErrorTxt.isEmpty) {
+                      addressController.text = "Tamil Nadu";
+                    }
                   },
                 ),
               ),
@@ -932,42 +965,42 @@ class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
               ),
 
         ///getting address from pin code
-        // if (item.isFieldValidated)
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "State",
-              style: AppTextStyles.bodyMedium(color: AppColors.textPrimary),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.016,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primary),
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                color: AppColors.background,
+        if (addressController.text.isNotEmpty)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "State",
+                style: AppTextStyles.bodyMedium(color: AppColors.textPrimary),
               ),
-              child: TextField(
-                style: AppTextStyles.bodyRegularNormal(
-                    color: AppColors.textPrimary),
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.done,
-                enabled: false,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.016,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.primary),
+                  borderRadius: const BorderRadius.all(Radius.circular(8)),
+                  color: AppColors.background,
                 ),
-                // controller: addressController,
+                child: TextField(
+                  style: AppTextStyles.bodyRegularNormal(
+                      color: AppColors.textPrimary),
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.done,
+                  enabled: false,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  controller: addressController,
+                ),
               ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.032,
-            )
-          ],
-        ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.032,
+              )
+            ],
+          ),
       ],
     );
   }
@@ -1004,19 +1037,9 @@ class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
             ),
             controller: item.fieldController,
             onChanged: (a) {
+              fieldValidate(value: a, field: "age", item: item);
+
               sellCubit.fieldValidate();
-              setState(() {
-                if (item.fieldController.text.isNotEmpty &&
-                    item.fieldController.text.length == 6) {
-                  setState(() {
-                    item.isFieldValidated = true;
-                    // addressController.text = "Chennai";
-                  });
-                } else {
-                  item.fieldErrorTxt = "PLease enter valid pin code";
-                  item.isFieldValidated = true;
-                }
-              });
             },
           ),
         ),
@@ -1043,6 +1066,41 @@ class _DbSellConfirmScreenState extends State<DbSellConfirmScreen> {
         ),
       ],
     );
+  }
+
+  fieldValidate(
+      {required String value,
+      required String field,
+      required DbSellConfirmDataEntity item}) {
+    setState(() {
+      if (field == "age") {
+        if (value.isEmpty) {
+          item.isFieldValidated = true;
+          item.fieldErrorTxt = "Please enter your age";
+        }
+        final age = int.tryParse(value);
+        if (age == null) {
+          item.isFieldValidated = true;
+          item.fieldErrorTxt = "Enter a valid number";
+        }
+        if (age! < 1 || age > 120) {
+          item.fieldErrorTxt = "Enter a valid age (1-120)";
+          item.isFieldValidated = true;
+        } else {
+          item.fieldErrorTxt = "";
+          item.isFieldValidated = false;
+        }
+      } else if (field == "pincode") {
+        if (item.fieldController.text.isNotEmpty &&
+            item.fieldController.text.length == 6) {
+          item.isFieldValidated = false;
+          item.fieldErrorTxt = "";
+        } else {
+          item.fieldErrorTxt = "PLease enter valid pin code";
+          item.isFieldValidated = true;
+        }
+      }
+    });
   }
 }
 

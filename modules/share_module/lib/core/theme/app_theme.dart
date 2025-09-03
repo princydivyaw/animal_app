@@ -28,6 +28,18 @@ class AppTheme {
       brightness: Brightness.dark,
     ),
     textTheme: AppTextStyles.textThemeDark,
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.transparent,
+      border: InputBorder.none,
+      enabledBorder: InputBorder.none,
+      focusedBorder: InputBorder.none,
+      hintStyle: AppTextStyles.captionNormal(
+          color: AppColors.backgroundDark), // hint color
+      labelStyle: AppTextStyles.captionNormal(color: AppColors.backgroundDark),
+      counterStyle:
+          AppTextStyles.captionNormal(color: AppColors.backgroundDark),
+    ),
     extensions: const [
       AppSpacingExtension(small: 8, medium: 16, large: 24),
       AppRadiusExtension(small: 4, medium: 8, large: 16),

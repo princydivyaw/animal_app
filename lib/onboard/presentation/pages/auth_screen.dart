@@ -2,11 +2,13 @@ import 'package:animal_app/config/onboard_string.dart';
 import 'package:animal_app/onboard/data/models/ob_all_request_model.dart';
 import 'package:animal_app/onboard/presentation/cubit/auth_cubit.dart';
 import 'package:animal_app/onboard/presentation/cubit/auth_state.dart';
+import 'package:animal_app/onboard/presentation/widgets/db_rain_drop_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:share_module/core/constants/app_assets.dart';
 import 'package:share_module/core/constants/app_colors.dart';
+import 'package:share_module/core/constants/app_routes.dart';
 import 'package:share_module/core/theme/text_styles.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -46,8 +48,15 @@ class AuthScreenState extends State<AuthScreen> {
               bloc: regCubit,
               listener: (context, state) {
                 if (state is ObRegLoadedState) {
-                  showSnackBar(errorMessage: "Registered Successfully");
-                  Modular.to.pushNamed("/dashboardModule/");
+                  // showSnackBar(errorMessage: "Registered Successfully");
+                  Modular.to.push(
+                    MaterialPageRoute(
+                      builder: (_) => const DbRainDropAnimation(
+                        pageScreen: "${AppRoutes.dashboardModule}/",
+                      ),
+                    ),
+                  );
+                  // Modular.to.pushNamed("/dashboardModule/");
                 } else if (state is ObRegErrorState) {
                   showSnackBar(errorMessage: state.errorMsg);
                 }
@@ -190,7 +199,7 @@ class AuthScreenState extends State<AuthScreen> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width,
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: passwordFocus.hasFocus
